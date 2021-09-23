@@ -95,28 +95,66 @@ function enterPageNum(event) {
     }
 }
 
+function enterZoomFactor(event) {
+    event.preventDefault;
+
+    if (myState.pdf == null) {
+        return;
+    }
+
+    if (event.key == 'Enter') {
+        const desiredZoom = document.getElementById('zoom_factor').value;
+
+        let zoomVal = 0;
+        if (desiredZoom.charAt(desiredZoom.length - 1) == '%') {
+            zoomVal = parseInt(desiredZoom.substring(0, desiredZoom.length - 1));
+        } else {
+            zoomVal = parseInt(desiredZoom);
+        }
+
+        if (zoomVal >= 40 && zoomVal <= 400) {
+
+            myState.zoom = toFactor(zoomVal);
+            document.getElementById("zoom_factor").value = zoomVal + "%";
+
+            render();
+        }
+    }
+}
+
 
 function toPercent(factor) {
     let strFloat = factor.toString();
-    console.log("input" + strFloat);
+    console.log(strFloat);
     let strFTimes100 = "";
+    let digits = strFloat.split('.');
     if (strFloat.length == 3) {
-        let digits = strFloat.split('.');
-        strFTimes100 = digits[0] + digits[1] + '0';
+        if (digits[0] == '0') {
+            strFTimes100 = digits[1] + '0';
+        } else {
+            strFTimes100 = digits[0] + digits[1] + '0';
+        }
+    } else if (strFloat.length == 4) {
+        if (digits[0] == '0') {
+            strFTimes100 = digits[1] + digits[2];
+        } else {
+            strFTimes100 = digits[0] + digits[1] + digits[2];
+        }
     } else {
         strFTimes100 = strFloat + "00";
     }
-    console.log("str" + strFTimes100);
     let intTimes100 = parseInt(strFTimes100);
     return intTimes100;
 }
 
 function toFactor(percentage) {
-    let times10 = percentage * 10;
+    let times10 = percentage * 100;
     let strDiv100 = (times10 / 100).toString();
     let strDecimal = "";
     if (strDiv100.length == 1) {
-        strDecimal = "0." + strDiv100;
+        strDecimal = "0.0" + strDiv100;
+    } else if (strDiv100.length == 2) {
+        strDecimal = "0." + strDiv100.substring(0, 1) + strDiv100.substring(1, 2);
     } else {
         strDecimal = strDiv100.substring(0, 1) + '.' + strDiv100.substring(1, 2);
     }
@@ -152,7 +190,7 @@ document.getElementById('zoom_in').addEventListener('click', (e) => {
     if (myState.zoom < 4.0) {
         let percent = toPercent(myState.zoom);
         percent += 20;
-        document.getElementById('zoom_factor').value = percent;
+        document.getElementById('zoom_factor').value = percent + "%";
         myState.zoom = toFactor(percent);
     }
 
@@ -165,13 +203,12 @@ document.getElementById('zoom_out').addEventListener('click', (e) => {
     }
 
     if (myState.zoom > 0.4) {
-        console.log("zoom" + myState.zoom);
         let percent = toPercent(myState.zoom);
         percent -= 20;
-        document.getElementById('zoom_factor').value = percent;
+        document.getElementById('zoom_factor').value = percent + "%";
         myState.zoom = toFactor(percent);
-
     }
+
     render();
 });
 
@@ -181,3 +218,4 @@ document.getElementById('go_next').addEventListener('click', goNextPage);
 document.getElementById('pdf_renderer').addEventListener('wheel', scrollPage);
 
 document.getElementById('current_page').addEventListener('keyup', enterPageNum);
+document.getElementById('zoom_factor').addEventListener('keyup', enterZoomFactor);
