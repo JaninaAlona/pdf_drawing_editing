@@ -125,7 +125,6 @@ function enterZoomFactor(event) {
 
 function toPercent(factor) {
     let strFloat = factor.toString();
-    console.log(strFloat);
     let strFTimes100 = "";
     let digits = strFloat.split('.');
     if (strFloat.length == 3) {
@@ -150,20 +149,18 @@ function toPercent(factor) {
 function toFactor(percentage) {
     let times10 = percentage * 100;
     let strDiv100 = (times10 / 100).toString();
-    let strDecimal = "";
-    if (strDiv100.length == 1) {
-        strDecimal = "0.0" + strDiv100;
-    } else if (strDiv100.length == 2) {
-        strDecimal = "0." + strDiv100.substring(0, 1) + strDiv100.substring(1, 2);
+    let strToDecimal = '';
+    if (strDiv100.length == 2) {
+        strToDecimal = "0." + strDiv100.substring(0, 1) + strDiv100.substring(1, 2);
     } else {
-        strDecimal = strDiv100.substring(0, 1) + '.' + strDiv100.substring(1, 2);
+        strToDecimal = strDiv100.substring(0, 1) + '.' + strDiv100.substring(1, 2) + strDiv100.substring(2, 3);
     }
 
-    let div100Float = parseFloat(strDecimal);
+    let div100Float = parseFloat(strToDecimal);
     return div100Float;
 }
 
-
+//$(document).ready(function() {
 document.getElementById('inputfile').onchange = function(event) {
     const file = event.target.files[0];
     const fileReader = new FileReader();
@@ -189,7 +186,12 @@ document.getElementById('zoom_in').addEventListener('click', (e) => {
 
     if (myState.zoom < 4.0) {
         let percent = toPercent(myState.zoom);
+        console.log("after perc" + percent);
+
         percent += 20;
+        if (percent >= 400) {
+            return;
+        }
         document.getElementById('zoom_factor').value = percent + "%";
         myState.zoom = toFactor(percent);
     }
@@ -204,9 +206,14 @@ document.getElementById('zoom_out').addEventListener('click', (e) => {
 
     if (myState.zoom > 0.4) {
         let percent = toPercent(myState.zoom);
+
         percent -= 20;
+        if (percent <= 40) {
+            return;
+        }
         document.getElementById('zoom_factor').value = percent + "%";
         myState.zoom = toFactor(percent);
+
     }
 
     render();
@@ -219,3 +226,4 @@ document.getElementById('pdf_renderer').addEventListener('wheel', scrollPage);
 
 document.getElementById('current_page').addEventListener('keyup', enterPageNum);
 document.getElementById('zoom_factor').addEventListener('keyup', enterZoomFactor);
+//});
