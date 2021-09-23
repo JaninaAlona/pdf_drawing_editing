@@ -1,13 +1,27 @@
-#file-input {
-    display: none;
+.file_manipulation {
+    float: left;
 }
 
-.allbtn {
-    width: 200px;
+.navigation_controls {
     float: left;
 }
 
 .btn-dark {
-    color: #c19a89;
-    width: 180px;
+    color: #1ba6c9;
+}
+
+.pages {
+    width: 90px;
+}
+
+.zoom {
+    width: 50px;
+    font-weight: bold;
+}
+
+#canvas_container {
+    visibility: hidden;
+    background: #333;
+    text-align: center;
+    border: solid 3px;
 }
