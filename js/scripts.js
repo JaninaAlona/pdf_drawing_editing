@@ -97,20 +97,32 @@ function enterPageNum(event) {
 
 
 function toPercent(factor) {
-    let times100 = factor * 100.0;
-    let times100int = Math.trunc(times100);
-    if (times100int > 100) {
-        Math.floor(times100int);
-    } else if (times100int < 100) {
-        Math.ceil(times100int);
+    let strFloat = factor.toString();
+    console.log("input" + strFloat);
+    let strFTimes100 = "";
+    if (strFloat.length == 3) {
+        let digits = strFloat.split('.');
+        strFTimes100 = digits[0] + digits[1] + '0';
+    } else {
+        strFTimes100 = strFloat + "00";
     }
-    return times100int;
+    console.log("str" + strFTimes100);
+    let intTimes100 = parseInt(strFTimes100);
+    return intTimes100;
 }
 
 function toFactor(percentage) {
-    let div100Float = percentage.toFixed(1);
-    let div100 = div100Float / 100.0;
-    return div100;
+    let times10 = percentage * 10;
+    let strDiv100 = (times10 / 100).toString();
+    let strDecimal = "";
+    if (strDiv100.length == 1) {
+        strDecimal = "0." + strDiv100;
+    } else {
+        strDecimal = strDiv100.substring(0, 1) + '.' + strDiv100.substring(1, 2);
+    }
+
+    let div100Float = parseFloat(strDecimal);
+    return div100Float;
 }
 
 
@@ -133,25 +145,33 @@ document.getElementById('inputfile').onchange = function(event) {
 }
 
 document.getElementById('zoom_in').addEventListener('click', (e) => {
-    if (myState.pdf == null || myState.zoom > 4.5) {
+    if (myState.pdf == null || myState.zoom >= 4.0) {
         return;
     }
-    myState.zoom += 0.2;
-    let percent = toPercent(myState.zoom);
-    document.getElementById('zoom_factor').value = percent;
-    myState.zoom = toFactor(percent);
-    console.log(myState.zoom);
+
+    if (myState.zoom < 4.0) {
+        let percent = toPercent(myState.zoom);
+        percent += 20;
+        document.getElementById('zoom_factor').value = percent;
+        myState.zoom = toFactor(percent);
+    }
+
     render();
 });
 
 document.getElementById('zoom_out').addEventListener('click', (e) => {
-    if (myState.pdf == null || myState.zoom < 0.5) {
+    if (myState.pdf == null || myState.zoom <= 0.4) {
         return;
     }
-    myState.zoom -= 0.2;
-    let percent = toPercent(myState.zoom);
-    document.getElementById('zoom_factor').value = percent;
-    myState.zoom = toFactor(percent);
+
+    if (myState.zoom > 0.4) {
+        console.log("zoom" + myState.zoom);
+        let percent = toPercent(myState.zoom);
+        percent -= 20;
+        document.getElementById('zoom_factor').value = percent;
+        myState.zoom = toFactor(percent);
+
+    }
     render();
 });
 
