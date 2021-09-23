@@ -5,7 +5,12 @@ let myState = {
 }
 
 
+let activeCanvas = 0;
+let renderInProgress = false;
+
+
 function render() {
+
     // The document is loaded here...
     myState.pdf.getPage(myState.currentPage).then(function(page) {
 
@@ -24,25 +29,38 @@ function render() {
             canvasContext: context,
             viewport: viewport
         };
-        page.render(renderContext);
-        document.getElementById("canvas_container").style.visibility = "visible";
+
+        if (!renderInProgress) {
+            doRender(renderContext, page);
+        }
     });
 }
 
 
+function doRender(renderContext, page) {
+    renderInProgress = true;
+    let renderOp = page.render(renderContext);
+    renderOp.promise.then(function() {
+        document.getElementById("canvas_container").style.visibility = "visible";
+    }).finally(function() {
+        renderInProgress = false;
+    })
+}
+
+
 function goPrevPage() {
-    if(myState.pdf == null || myState.currentPage == 1) {
+    if (myState.pdf == null || myState.currentPage == 1) {
         return;
-    }    
+    }
     myState.currentPage -= 1;
     document.getElementById("current_page").value = myState.currentPage;
     render();
 }
 
 function goNextPage() {
-    if(myState.pdf == null || myState.currentPage > myState.pdf._pdfInfo.numPages) {
-        return; 
-    }    
+    if (myState.pdf == null || myState.currentPage > myState.pdf._pdfInfo.numPages) {
+        return;
+    }
     myState.currentPage += 1;
     document.getElementById("current_page").value = myState.currentPage;
     render();
@@ -54,13 +72,30 @@ function scrollPage(event) {
     //scrolling down
     if (event.deltaY > 0) {
         goNextPage();
-    
-    //scrolling up
+
+        //scrolling up
     } else if (event.deltaY < 0) {
         goPrevPage();
     }
 }
 
+function enterPageNum(event) {
+    event.preventDefault;
+
+    if (myState.pdf == null) {
+        return;
+    }
+
+    if (event.key == 'Enter') {
+        const desiredPage = document.getElementById('current_page').valueAsNumber;
+
+        if (desiredPage >= 1 && desiredPage <= myState.pdf._pdfInfo.numPages) {
+            myState.currentPage = desiredPage;
+            document.getElementById("current_page").value = desiredPage;
+            render();
+        }
+    }
+}
 
 
 document.getElementById('inputfile').onchange = function(event) {
@@ -68,6 +103,7 @@ document.getElementById('inputfile').onchange = function(event) {
     const fileReader = new FileReader();
     fileReader.onload = function() {
         const typedarray = new Uint8Array(this.result);
+        //pdfjsLib.GlobalWorkerOptions.workerSrc = '//mozilla.github.io/pdf.js/build/pdf.worker.js';
         const loadingTask = pdfjsLib.getDocument(typedarray);
         loadingTask.promise.then(pdf => {
             myState.pdf = pdf;
@@ -81,7 +117,7 @@ document.getElementById('inputfile').onchange = function(event) {
 }
 
 document.getElementById('zoom_in').addEventListener('click', (e) => {
-    if(myState.pdf == null || myState.zoom > 4.5) {
+    if (myState.pdf == null || myState.zoom > 4.5) {
         return;
     }
     myState.zoom += 0.2;
@@ -89,7 +125,7 @@ document.getElementById('zoom_in').addEventListener('click', (e) => {
 });
 
 document.getElementById('zoom_out').addEventListener('click', (e) => {
-    if(myState.pdf == null || myState.zoom < 0.5) {
+    if (myState.pdf == null || myState.zoom < 0.5) {
         return;
     }
     myState.zoom -= 0.2;
@@ -100,3 +136,5 @@ document.getElementById('go_previous').addEventListener('click', goPrevPage);
 document.getElementById('go_next').addEventListener('click', goNextPage);
 
 document.getElementById('pdf_renderer').addEventListener('wheel', scrollPage);
+
+document.getElementById('current_page').addEventListener('keyup', enterPageNum);
