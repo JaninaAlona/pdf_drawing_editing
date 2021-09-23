@@ -1,11 +1,9 @@
 let myState = {
     pdf: null,
     currentPage: 1,
-    zoom: 1.5
+    zoom: 1.0
 }
 
-
-let activeCanvas = 0;
 let renderInProgress = false;
 
 
@@ -98,6 +96,24 @@ function enterPageNum(event) {
 }
 
 
+function toPercent(factor) {
+    let times100 = factor * 100.0;
+    let times100int = Math.trunc(times100);
+    if (times100int > 100) {
+        Math.floor(times100int);
+    } else if (times100int < 100) {
+        Math.ceil(times100int);
+    }
+    return times100int;
+}
+
+function toFactor(percentage) {
+    let div100Float = percentage.toFixed(1);
+    let div100 = div100Float / 100.0;
+    return div100;
+}
+
+
 document.getElementById('inputfile').onchange = function(event) {
     const file = event.target.files[0];
     const fileReader = new FileReader();
@@ -121,6 +137,10 @@ document.getElementById('zoom_in').addEventListener('click', (e) => {
         return;
     }
     myState.zoom += 0.2;
+    let percent = toPercent(myState.zoom);
+    document.getElementById('zoom_factor').value = percent;
+    myState.zoom = toFactor(percent);
+    console.log(myState.zoom);
     render();
 });
 
@@ -129,6 +149,9 @@ document.getElementById('zoom_out').addEventListener('click', (e) => {
         return;
     }
     myState.zoom -= 0.2;
+    let percent = toPercent(myState.zoom);
+    document.getElementById('zoom_factor').value = percent;
+    myState.zoom = toFactor(percent);
     render();
 });
 
