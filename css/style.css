@@ -1,13 +1,6 @@
-.file_manipulation {
+.file_manip {
     float: left;
-}
-
-.navigation_controls {
-    float: left;
-}
-
-.btn-dark {
-    color: #1ba6c9;
+    margin: 10px 5px 10px 10px;
 }
 
 .pages {
@@ -17,6 +10,21 @@
 .zoom {
     width: 50px;
     font-weight: bold;
+}
+
+.pop_up {
+    background-color: #dabdb6;
+    padding: 20px;
+    width: 250px;
+    border-radius: 2px;
+}
+
+.pop_bottom_pad {
+    padding-bottom: 20px;
+}
+
+.no-close .ui-dialog-titlebar-close {
+    display: none;
 }
 
 #canvas_container {
