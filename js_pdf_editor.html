@@ -13,8 +13,8 @@
     <script type="text/javascript" src="js/pdf-lib.min.js"></script>
     <script type="text/javascript" src="js/jquery-ui.min.js"></script>
     <script type="text/javascript" src="js/bootstrap.bundle.min.js"></script>
-    <!-- <script src="js/pdfmake.min.js"></script>
-    <script src="js/vfs_fonts.js"></script> -->
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/download.min.js"></script>
 </head>
 
 <body>
@@ -58,13 +58,18 @@
                 <label for="width">Width in mm</label>
                 <input id="width" type="number" value="297" />
             </div>
-            <div class="pop_elem_size">
+            <div class="pop_elem_size pop_bottom_pad">
                 <label for="height">Height in mm</label>
                 <input id="height" type="number" value="210" />
+            </div>
+            <div class="pop_elem_size">
+                <button id="save" class="btn btn-success">Save</button>
+                <button id="cancel" class="btn btn-success">Cancel</button>
             </div>
         </fieldset>
     </div>
     <script type="text/javascript" src="js/scripts.js"></script>
+    <script type="text/javascript" src="js/scripts_empty_pdf.js"></script>
     <script type="text/javascript" src="js/bootstrap-filestyle.min.js"></script>
 
 </body>

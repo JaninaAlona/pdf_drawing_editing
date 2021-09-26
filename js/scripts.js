@@ -1,5 +1,3 @@
-//import { PDFDocument } from 'pdf-lib'
-
 $(document).ready(function() {
     let myState = {
         pdf: null,
@@ -8,7 +6,6 @@ $(document).ready(function() {
     }
 
     let renderInProgress = false;
-    const docDefinition = {};
 
 
     function render() {
@@ -170,7 +167,6 @@ $(document).ready(function() {
         const fileReader = new FileReader();
         fileReader.onload = function() {
             const typedarray = new Uint8Array(this.result);
-            //pdfjsLib.GlobalWorkerOptions.workerSrc = '//mozilla.github.io/pdf.js/build/pdf.worker.js';
             const loadingTask = pdfjsLib.getDocument(typedarray);
             loadingTask.promise.then(pdf => {
                 myState.pdf = pdf;
@@ -190,7 +186,6 @@ $(document).ready(function() {
 
         if (myState.zoom < 4.0) {
             let percent = toPercent(myState.zoom);
-            console.log("after perc" + percent);
 
             percent += 20;
             if (percent >= 400) {
@@ -223,25 +218,6 @@ $(document).ready(function() {
         render();
     });
 
-    function openEmptyPageDialog() {
-        $("#empty_page_dialog").dialog({
-            autoOpen: false,
-            dialogClass: "no-close"
-        });
-        $("#create_pdf").click(function() {
-            $("#empty_page_dialog").dialog("open");
-        });
-    }
-
-    async function createPdf() {
-        const pdfDoc = await PDFDocument.create()
-
-        const page = pdfDoc.addPage()
-
-        const pdfBytes = await pdfDoc.save()
-    }
-
-    openEmptyPageDialog();
 
     document.getElementById('go_previous').addEventListener('click', goPrevPage);
     document.getElementById('go_next').addEventListener('click', goNextPage);
