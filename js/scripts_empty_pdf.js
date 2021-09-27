@@ -1,15 +1,22 @@
 $(document).ready(function() {
     const { PDFDocument } = PDFLib
     let numOfPages = 1;
-    let width = 210;
-    let height = 297;
+    let pageWidth = 210;
+    let pageHeight = 297;
 
     async function createPdf() {
         // Create a new PDFDocument
         const pdfDoc = await PDFDocument.create()
 
+        let page;
+
+        //page library factor 352.8
+        const pageWFactor = (pageWidth * 1000) / 352.8;
+        const pageHFactor = (pageHeight * 1000) / 352.8;
+
         for (let i = 0; i < numOfPages; i++) {
-            pdfDoc.addPage([width, height])
+            page = pdfDoc.addPage()
+            page.setMediaBox(0, 0, pageWFactor, pageHFactor)
         }
 
         // Serialize the PDFDocument to bytes (a Uint8Array)
@@ -17,21 +24,6 @@ $(document).ready(function() {
 
         // Trigger the browser to download the PDF document
         download(pdfBytes, "blank_pdf.pdf", "application/pdf");
-    }
-
-
-    function openEmptyPageDialog() {
-        $("#empty_page_dialog").dialog({
-            autoOpen: false,
-            dialogClass: "no-close"
-        });
-        $("#create_pdf").click(function() {
-            $("#empty_page_dialog").dialog("open");
-            $("#save").click(function() {
-                saveInput();
-                createPdf();
-            })
-        });
     }
 
     function saveInput() {
@@ -42,23 +34,39 @@ $(document).ready(function() {
             //display warning -> dialog
         }
 
-        width = document.getElementById('width').valueAsNumber;
+        pageWidth = document.getElementById('width').valueAsNumber;
 
         //min: DIN A7, max DIN A0
-        if (width >= 74 && width <= 841) {
-            document.getElementById('width').value = width;
+        if (pageWidth >= 74 && pageWidth <= 1189) {
+            document.getElementById('width').value = pageWidth;
         } else {
             //warning
         }
 
-        height = document.getElementById('height').valueAsNumber;
+        pageHeight = document.getElementById('height').valueAsNumber;
 
         //min: DIN A7, max DIN A0
-        if (height >= 74 && height <= 841) {
-            document.getElementById('height').value = height;
+        if (pageHeight >= 74 && pageHeight <= 1189) {
+            document.getElementById('height').value = pageHeight;
         } else {
             //warning window
         }
+    }
+
+    function openEmptyPageDialog() {
+        $("#empty_page_dialog").dialog({
+            autoOpen: false,
+            dialogClass: "no-close"
+        });
+        $("#create_pdf").click(function() {
+            $("#empty_page_dialog").dialog("open");
+            $("input").checkboxradio();
+            //valueChanged();
+            $("#save").click(function() {
+                saveInput();
+                createPdf();
+            });
+        });
     }
 
     openEmptyPageDialog();
