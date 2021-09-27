@@ -33,3 +33,11 @@
     text-align: center;
     border: solid 3px;
 }
+
+.pop_up legend {
+    font-size: 18px;
+}
+
+.space_btw_radio {
+    margin-right: 10px;
+}

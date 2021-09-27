@@ -53,6 +53,17 @@ $(document).ready(function() {
         }
     }
 
+    function changeOrient() {
+        let landChecked = document.getElementById('landscape').checked;
+        let portChecked = document.getElementById('portrait').checked;
+
+        if (landChecked) {
+
+        } else if (portChecked) {
+
+        }
+    }
+
     function openEmptyPageDialog() {
         $("#empty_page_dialog").dialog({
             autoOpen: false,
@@ -60,8 +71,18 @@ $(document).ready(function() {
         });
         $("#create_pdf").click(function() {
             $("#empty_page_dialog").dialog("open");
-            $("input").checkboxradio();
-            //valueChanged();
+
+            //reset input values
+            document.getElementById('pages').value = 1;
+            document.getElementById('width').value = 210;
+            document.getElementById('height').value = 297;
+            document.getElementById('landscape').checked = false;
+            document.getElementById('portrait').checked = true;
+
+            $("orientation").checkboxradio(function() {
+                changeOrient();
+            });
+
             $("#save").click(function() {
                 saveInput();
                 createPdf();
@@ -70,4 +91,5 @@ $(document).ready(function() {
     }
 
     openEmptyPageDialog();
+
 });
