@@ -53,23 +53,12 @@ $(document).ready(function() {
         }
     }
 
-    function changeOrient() {
-        let landChecked = document.getElementById('landscape').checked;
-        let portChecked = document.getElementById('portrait').checked;
-
-        if (landChecked) {
-
-        } else if (portChecked) {
-
-        }
-    }
-
     function openEmptyPageDialog() {
         $("#empty_page_dialog").dialog({
             autoOpen: false,
             dialogClass: "no-close"
         });
-        $("#create_pdf").click(function() {
+        $("#create_pdf").on("click", function() {
             $("#empty_page_dialog").dialog("open");
 
             //reset input values
@@ -79,13 +68,43 @@ $(document).ready(function() {
             document.getElementById('landscape').checked = false;
             document.getElementById('portrait').checked = true;
 
-            $("orientation").checkboxradio(function() {
-                changeOrient();
+            //initialize widget
+            $("orientation").checkboxradio();
+
+
+            $("#portrait").on("click", function() {
+                let width = document.getElementById('width').valueAsNumber;
+                let height = document.getElementById('height').valueAsNumber;
+                if (width > height) {
+                    document.getElementById('width').value = height;
+                    document.getElementById('height').value = width;
+                }
             });
 
-            $("#save").click(function() {
+            $("#landscape").on("click", function() {
+                let width = document.getElementById('width').valueAsNumber;
+                let height = document.getElementById('height').valueAsNumber;
+                if (width < height) {
+                    document.getElementById('width').value = height;
+                    document.getElementById('height').value = width;
+                }
+            });
+
+            $("#quadratic").on("click", function() {
+                let width = document.getElementById('width').valueAsNumber;
+                let height = document.getElementById('height').valueAsNumber;
+                if (width < height || width > height) {
+                    document.getElementById('height').value = width;
+                }
+            });
+
+            $("#save").on("click", function() {
                 saveInput();
                 createPdf();
+            });
+
+            $("#cancel").on("click", function() {
+                $("#empty_page_dialog").dialog("close");
             });
         });
     }

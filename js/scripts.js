@@ -7,7 +7,6 @@ $(document).ready(function() {
 
     let renderInProgress = false;
 
-
     function render() {
 
         // The document is loaded here...
