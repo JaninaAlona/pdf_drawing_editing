@@ -7,6 +7,13 @@ $(document).ready(function() {
 
     let renderInProgress = false;
 
+    //reset input fields
+    myState.currentPage = 1;
+    myState.zoom = 1.0;
+    document.getElementById("current_page").value = myState.currentPage;
+    document.getElementById('zoom_factor').value = toPercent(myState.zoom);
+
+
     function render() {
 
         // The document is loaded here...
@@ -48,76 +55,78 @@ $(document).ready(function() {
 
     function goPrevPage() {
         if (myState.pdf == null || myState.currentPage == 1) {
-            return;
+            myState.currentPage = 1;
+            document.getElementById('current_page').value = 1;
+        } else {
+            myState.currentPage -= 1;
+            document.getElementById("current_page").value = myState.currentPage;
+            render();
         }
-        myState.currentPage -= 1;
-        document.getElementById("current_page").value = myState.currentPage;
-        render();
     }
 
     function goNextPage() {
-        if (myState.pdf == null || myState.currentPage > myState.pdf._pdfInfo.numPages) {
-            return;
+        if (myState.pdf == null || myState.currentPage >= myState.pdf._pdfInfo.numPages) {
+            myState.currentPage = myState.pdf._pdfInfo.numPages;
+            document.getElementById('current_page').value = myState.pdf._pdfInfo.numPages;
+        } else {
+            myState.currentPage += 1;
+            document.getElementById("current_page").value = myState.currentPage;
+            render();
         }
-        myState.currentPage += 1;
-        document.getElementById("current_page").value = myState.currentPage;
-        render();
     }
 
-    function scrollPage(event) {
-        event.preventDefault;
+    function scrollPage(e) {
+        e.preventDefault;
 
         //scrolling down
-        if (event.deltaY > 0) {
+        if (e.deltaY > 0) {
             goNextPage();
 
             //scrolling up
-        } else if (event.deltaY < 0) {
+        } else if (e.deltaY < 0) {
             goPrevPage();
         }
     }
 
-    function enterPageNum(event) {
-        event.preventDefault;
+    function enterPageNum(e) {
+        e.preventDefault;
 
-        if (myState.pdf == null) {
-            return;
-        }
+        if (myState.pdf != null) {
+            if (e.key == 'Enter') {
+                const desiredPage = document.getElementById('current_page').valueAsNumber;
 
-        if (event.key == 'Enter') {
-            const desiredPage = document.getElementById('current_page').valueAsNumber;
-
-            if (desiredPage >= 1 && desiredPage <= myState.pdf._pdfInfo.numPages) {
-                myState.currentPage = desiredPage;
-                document.getElementById("current_page").value = desiredPage;
-                render();
+                if (desiredPage >= 1 && desiredPage <= myState.pdf._pdfInfo.numPages) {
+                    myState.currentPage = desiredPage;
+                    document.getElementById("current_page").value = desiredPage;
+                    render();
+                }
             }
         }
     }
 
-    function enterZoomFactor(event) {
-        event.preventDefault;
+    function enterZoomFactor(e) {
+        e.preventDefault;
 
         if (myState.pdf == null) {
             return;
-        }
+        } else {
+            if (e.key == 'Enter') {
+                const desiredZoom = document.getElementById('zoom_factor').value;
 
-        if (event.key == 'Enter') {
-            const desiredZoom = document.getElementById('zoom_factor').value;
+                let zoomVal = 0;
+                if (desiredZoom.charAt(desiredZoom.length - 1) == '%') {
+                    zoomVal = parseInt(desiredZoom.substring(0, desiredZoom.length - 1));
+                } else {
+                    zoomVal = parseInt(desiredZoom);
+                }
 
-            let zoomVal = 0;
-            if (desiredZoom.charAt(desiredZoom.length - 1) == '%') {
-                zoomVal = parseInt(desiredZoom.substring(0, desiredZoom.length - 1));
-            } else {
-                zoomVal = parseInt(desiredZoom);
-            }
+                if (zoomVal >= 40 && zoomVal <= 400) {
 
-            if (zoomVal >= 40 && zoomVal <= 400) {
+                    myState.zoom = toFactor(zoomVal);
+                    document.getElementById("zoom_factor").value = zoomVal + "%";
 
-                myState.zoom = toFactor(zoomVal);
-                document.getElementById("zoom_factor").value = zoomVal + "%";
-
-                render();
+                    render();
+                }
             }
         }
     }
@@ -161,8 +170,8 @@ $(document).ready(function() {
     }
 
 
-    document.getElementById('inputfile').onchange = function(event) {
-        const file = event.target.files[0];
+    document.getElementById('inputfile').onchange = function(e) {
+        const file = e.target.files[0];
         const fileReader = new FileReader();
         fileReader.onload = function() {
             const typedarray = new Uint8Array(this.result);
