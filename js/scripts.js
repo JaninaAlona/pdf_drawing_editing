@@ -5,7 +5,6 @@ $(document).ready(function() {
         zoom: 1.0
     }
 
-    let renderInProgress = false;
     let numPages = 0;
     let currentPage = 1;
 
@@ -20,6 +19,9 @@ $(document).ready(function() {
 
 
     function renderAllPages(page) {
+
+        let pdfViewer = document.getElementById('pdf_viewer');
+
         let scale = myState.zoom;
         let viewport = page.getViewport({
             scale: scale
@@ -39,7 +41,7 @@ $(document).ready(function() {
             viewport: viewport
         });
 
-        document.getElementById('pdf_viewer').appendChild(canvas);
+        pdfViewer.appendChild(canvas);
 
         currentPage++;
         if (myState.pdf != null && currentPage <= numPages) {
@@ -47,6 +49,14 @@ $(document).ready(function() {
         }
     }
 
+    function RErenderAllPages() {
+        currentPage = 1;
+        let pdfViewer = document.getElementById('pdf_viewer');
+        while (pdfViewer.firstChild) {
+            pdfViewer.removeChild(pdfViewer.firstChild);
+        }
+        myState.pdf.getPage(1).then(renderAllPages);
+    }
 
     function goPrevPage() {
         if (myState.currentPage == 1) {
@@ -99,7 +109,7 @@ $(document).ready(function() {
                 myState.zoom = toFactor(zoomVal);
                 document.getElementById("zoom_factor").value = zoomVal + "%";
 
-                renderAllPages();
+                RErenderAllPages();
             }
         }
     }
@@ -158,6 +168,7 @@ $(document).ready(function() {
                 document.getElementById("current_page").value = 1;
                 fileManipButtons.disabled = false;
                 document.getElementById("pdf_viewer").style.visibility = "visible";
+                document.getElementById("margin_buttons").style.visibility = "visible";
                 myState.pdf.getPage(1).then(renderAllPages);
             });
 
@@ -176,8 +187,7 @@ $(document).ready(function() {
             document.getElementById('zoom_factor').value = percent + "%";
             myState.zoom = toFactor(percent);
         }
-
-        renderAllPages();
+        RErenderAllPages();
     });
 
     document.getElementById('zoom_out').addEventListener('click', (e) => {
@@ -192,7 +202,7 @@ $(document).ready(function() {
             myState.zoom = toFactor(percent);
 
         }
-        renderAllPages();
+        RErenderAllPages();
     });
 
     document.getElementById('go_previous').addEventListener('click', goPrevPage);

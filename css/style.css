@@ -1,3 +1,20 @@
+body {
+    overflow-y: scroll;
+}
+
+#buttons {
+    position: fixed;
+    background: #333;
+    width: 100%;
+    height: 58px;
+}
+
+#margin_buttons {
+    height: 78px;
+    background: #333;
+    visibility: hidden;
+}
+
 .file_manip {
     float: left;
     margin: 10px 5px 10px 10px;
