@@ -154,6 +154,12 @@ $(document).ready(function() {
 
 
     document.getElementById('inputfile').onchange = function(e) {
+        myState.pdf = null;
+        currentPage = 1;
+        let pdfViewer = document.getElementById('pdf_viewer');
+        while (pdfViewer.firstChild) {
+            pdfViewer.removeChild(pdfViewer.firstChild);
+        }
         const file = e.target.files[0];
         const fileReader = new FileReader();
         fileReader.onload = function() {
