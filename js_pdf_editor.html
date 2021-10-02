@@ -17,21 +17,25 @@
     <script type="text/javascript" src="js/bootstrap.min.js"></script>
     <script type="text/javascript" src="js/download.min.js"></script>
 
+    <script type="text/javascript" src="js/Renderer.js"></script>
+    <script type="text/javascript" src="js/PageNavigator.js"></script>
+    <script type="text/javascript" src="js/GUIAdministrator.js"></script>
+
 
 </head>
 
 <body>
     <header id="buttons">
         <div class="file_manip">
-            <input type="file" id="inputfile" class="filestyle file_manip" data-btnClass="btn-success" data-input="false" accept=".pdf">
+            <input type="file" id="inputfile" class="filestyle" data-btnClass="btn-success" data-input="false" accept=".pdf">
         </div>
         <button id="create_pdf" class="btn btn-success file_manip">Create</button>
-        <button id="go_previous" class="pages btn btn-success file_manip">Previous</button>
-        <input id="current_page" class="file_manip" value="1" type="number" />
-        <button id="go_next" class="pages btn btn-success file_manip">Next</button>
-        <button id="zoom_in" class="zoom btn btn-success file_manip">+</button>
-        <input id="zoom_factor" class="file_manip" value="100%" type="text" />
-        <button id="zoom_out" class="zoom btn btn-success file_manip">-</button>
+        <button id="go_previous" class="pages btn btn-success file_manip" disabled="true">Previous</button>
+        <input id="current_page" class="file_manip" value="1" type="number" disabled="true">
+        <button id="go_next" class="pages btn btn-success file_manip" disabled="true">Next</button>
+        <button id="zoom_in" class="zoom btn btn-success file_manip" disabled="true">+</button>
+        <input id="zoom_factor" class="file_manip" value="100%" type="text" disabled="true">
+        <button id="zoom_out" class="zoom btn btn-success file_manip" disabled="true">-</button>
     </header>
     <div id="margin_buttons"></div>
     <div id="pdf_reader_bg">
@@ -85,9 +89,11 @@
             </div>
         </fieldset>
     </div>
-    <script type="text/javascript" src="js/scripts.js"></script>
-    <script type="text/javascript" src="js/scripts_blank_pdf.js"></script>
     <script type="text/javascript" src="js/bootstrap-filestyle.min.js"></script>
+
+
+    <script type="text/javascript" src="js/scripts_blank_pdf.js"></script>
+    <script type="text/javascript" src="js/scripts.js"></script>
 
 </body>
 

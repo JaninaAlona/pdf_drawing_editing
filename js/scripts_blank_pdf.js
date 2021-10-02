@@ -59,6 +59,7 @@ $(document).ready(function() {
             dialogClass: "no-close"
         });
         $("#create_pdf").on("click", function() {
+            activateReaderControls(false);
             $("#empty_page_dialog").dialog("open");
 
             //reset input values
