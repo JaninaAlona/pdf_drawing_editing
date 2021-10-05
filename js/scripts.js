@@ -7,8 +7,6 @@ let pdfState = {
 
 let pageCounter = 1;
 
-resetToDefaults();
-
 
 function jumpTo(pageToJump) {
 
@@ -97,9 +95,8 @@ function resetRendering() {
     while (pdfViewer.firstChild) {
         pdfViewer.removeChild(pdfViewer.firstChild);
     }
-    if (pdfState.pdf == null) {
-        pdfState.pageHeight = [];
-    }
+    pdfState.pageHeight = [];
+    pageCounter = 1;
 }
 
 function cleanUp() {
@@ -109,7 +106,7 @@ function cleanUp() {
         if (e instanceof TypeError) {} else {
             pdfState.pdf = null;
         }
-        pageCounter = 1;
+    } finally {
         pdfState.zoom = 1.0;
         resetRendering();
     }
@@ -118,7 +115,6 @@ function cleanUp() {
 function zoomIn() {
     if (pdfState.zoom < 4.0) {
         let percent = toPercent(pdfState.zoom);
-
         percent += 20;
         if (percent < 400) {
             document.getElementById('zoom_factor').value = percent + "%";
@@ -133,7 +129,6 @@ function zoomIn() {
 function zoomOut() {
     if (pdfState.zoom > 0.4) {
         let percent = toPercent(pdfState.zoom);
-
         percent -= 20;
         if (percent > 40) {
             document.getElementById('zoom_factor').value = percent + "%";
