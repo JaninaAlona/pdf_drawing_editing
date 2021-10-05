@@ -58,6 +58,10 @@ body {
     visibility: hidden;
 }
 
+#reader_controls {
+    visibility: hidden;
+}
+
 .pop_up legend {
     font-size: 18px;
 }
