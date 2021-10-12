@@ -1,0 +1,18 @@
+.pop_up legend {
+    font-size: 18px;
+}
+
+.space_btw_radio {
+    margin-right: 10px;
+}
+
+.pop_up {
+    background-color: #dabdb6;
+    padding: 20px;
+    width: 250px;
+    border-radius: 2px;
+}
+
+.pop_bottom_pad {
+    padding-bottom: 20px;
+}

@@ -29,21 +29,6 @@ body {
     font-weight: bold;
 }
 
-.pop_up {
-    background-color: #dabdb6;
-    padding: 20px;
-    width: 250px;
-    border-radius: 2px;
-}
-
-.pop_bottom_pad {
-    padding-bottom: 20px;
-}
-
-.no-close .ui-dialog-titlebar-close {
-    display: none;
-}
-
 #pdf_reader_bg {
     background: #333;
     width: 100%;
@@ -62,10 +47,8 @@ body {
     visibility: hidden;
 }
 
-.pop_up legend {
-    font-size: 18px;
-}
-
-.space_btw_radio {
-    margin-right: 10px;
+#create_pdf {
+    position: absolute;
+    left: 110px;
+    top: 0px;
 }
