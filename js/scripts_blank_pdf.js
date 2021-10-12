@@ -1,115 +1,122 @@
-$(document).ready(function() {
-    const { PDFDocument } = PDFLib
-    let numOfPages = 1;
-    let pageWidth = 210;
-    let pageHeight = 297;
+// import { default as Vue } from "vue";
 
-    async function createPdf() {
-        // Create a new PDFDocument
-        const pdfDoc = await PDFDocument.create()
+// var app = new Vue({
+//     el: 'body',
+//     data: {
+//         visible: false
+//     },
+//     methods: {
+//         activate: function() {
+//             this.visible = true;
+//             console.log('ok');
+//         }
+//     }
+//   })
 
-        let page;
+  var app = new Vue({
+    el: '#app',
+    data: {
+      message: 'Hello Vue!'
+    }
+  })
 
-        //page library factor 352.8
-        const pageWFactor = (pageWidth * 1000) / 352.8;
-        const pageHFactor = (pageHeight * 1000) / 352.8;
 
-        for (let i = 0; i < numOfPages; i++) {
-            page = pdfDoc.addPage()
-            page.setMediaBox(0, 0, pageWFactor, pageHFactor)
-        }
+const { PDFDocument } = PDFLib
+let numOfPages = 1;
+let pageWidth = 210;
+let pageHeight = 297;
 
-        // Serialize the PDFDocument to bytes (a Uint8Array)
-        const pdfBytes = await pdfDoc.save()
+async function createPdf() {
+    // Create a new PDFDocument
+    const pdfDoc = await PDFDocument.create()
 
-        // Trigger the browser to download the PDF document
-        download(pdfBytes, "blank_pdf.pdf", "application/pdf");
+    let page;
+
+    //page library factor 352.8
+    const pageWFactor = (pageWidth * 1000) / 352.8;
+    const pageHFactor = (pageHeight * 1000) / 352.8;
+
+    for (let i = 0; i < numOfPages; i++) {
+        page = pdfDoc.addPage()
+        page.setMediaBox(0, 0, pageWFactor, pageHFactor)
     }
 
-    function saveInput() {
-        numOfPages = document.getElementById('pages').valueAsNumber;
-        if (numOfPages < 5000 && numOfPages > 0) {
-            document.getElementById('pages').valueAsNumber = numOfPages;
-        } else {
-            //display warning -> dialog
-        }
+    // Serialize the PDFDocument to bytes (a Uint8Array)
+    const pdfBytes = await pdfDoc.save()
 
-        pageWidth = document.getElementById('width').valueAsNumber;
+    // Trigger the browser to download the PDF document
+    download(pdfBytes, "blank_pdf.pdf", "application/pdf");
+}
 
-        //min: DIN A7, max DIN A0
-        if (pageWidth >= 74 && pageWidth <= 1189) {
-            document.getElementById('width').value = pageWidth;
-        } else {
-            //warning
-        }
-
-        pageHeight = document.getElementById('height').valueAsNumber;
-
-        //min: DIN A7, max DIN A0
-        if (pageHeight >= 74 && pageHeight <= 1189) {
-            document.getElementById('height').value = pageHeight;
-        } else {
-            //warning window
-        }
+function saveInput() {
+    numOfPages = document.getElementById('pages').valueAsNumber;
+    if (numOfPages < 5000 && numOfPages > 0) {
+        document.getElementById('pages').valueAsNumber = numOfPages;
+    } else {
+        //display warning -> dialog
     }
 
-    function openEmptyPageDialog() {
-        $("#empty_page_dialog").dialog({
-            autoOpen: false,
-            dialogClass: "no-close"
-        });
-        $("#create_pdf").on("click", function() {
-            activateReaderControls(false);
-            $("#empty_page_dialog").dialog("open");
+    pageWidth = document.getElementById('width').valueAsNumber;
 
-            //reset input values
-            document.getElementById('pages').value = 1;
-            document.getElementById('width').value = 210;
-            document.getElementById('height').value = 297;
-            document.getElementById('landscape').checked = false;
-            document.getElementById('portrait').checked = true;
-
-            //initialize widget
-            $("orientation").checkboxradio();
-
-
-            $("#portrait").on("click", function() {
-                let width = document.getElementById('width').valueAsNumber;
-                let height = document.getElementById('height').valueAsNumber;
-                if (width > height) {
-                    document.getElementById('width').value = height;
-                    document.getElementById('height').value = width;
-                }
-            });
-
-            $("#landscape").on("click", function() {
-                let width = document.getElementById('width').valueAsNumber;
-                let height = document.getElementById('height').valueAsNumber;
-                if (width < height) {
-                    document.getElementById('width').value = height;
-                    document.getElementById('height').value = width;
-                }
-            });
-
-            $("#quadratic").on("click", function() {
-                let width = document.getElementById('width').valueAsNumber;
-                let height = document.getElementById('height').valueAsNumber;
-                if (width < height || width > height) {
-                    document.getElementById('height').value = width;
-                }
-            });
-
-            $("#save").on("click", function() {
-                saveInput();
-                createPdf();
-            });
-
-            $("#cancel").on("click", function() {
-                $("#empty_page_dialog").dialog("close");
-            });
-        });
+    //min: DIN A7, max DIN A0
+    if (pageWidth >= 74 && pageWidth <= 1189) {
+        document.getElementById('width').value = pageWidth;
+    } else {
+        //warning
     }
 
-    openEmptyPageDialog();
+    pageHeight = document.getElementById('height').valueAsNumber;
 
+    //min: DIN A7, max DIN A0
+    if (pageHeight >= 74 && pageHeight <= 1189) {
+        document.getElementById('height').value = pageHeight;
+    } else {
+        //warning window
+    }
+}
+
+function deactivateReaderControls() {}
+
+
+document.getElementById('create_pdf').addEventListener('click', function() {
+    deactivateReaderControls();
+    
+    //reset input values
+    document.getElementById('pages').value = 1;
+    document.getElementById('width').value = 210;
+    document.getElementById('height').value = 297;
+    document.getElementById('landscape').checked = false;
+    document.getElementById('portrait').checked = true;
+
+});
+
+document.getElementById('portrait').addEventListener('click', function() {
+    let width = document.getElementById('width').valueAsNumber;
+    let height = document.getElementById('height').valueAsNumber;
+    if (width > height) {
+        document.getElementById('width').value = height;
+        document.getElementById('height').value = width;
+    }
+});
+
+document.getElementById('landscape').addEventListener('click', function() {
+    let width = document.getElementById('width').valueAsNumber;
+    let height = document.getElementById('height').valueAsNumber;
+    if (width < height) {
+        document.getElementById('width').value = height;
+        document.getElementById('height').value = width;
+    }
+});
+
+document.getElementById('quadratic').addEventListener('click', function() {
+    let width = document.getElementById('width').valueAsNumber;
+    let height = document.getElementById('height').valueAsNumber;
+    if (width < height || width > height) {
+        document.getElementById('height').value = width;
+    }
+});
+
+document.getElementById('save').addEventListener('click', function() {
+    saveInput();
+    createPdf();
 });
