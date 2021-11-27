@@ -59,7 +59,7 @@ function saveInput() {
     this.Widget = function() {
       // HTML source code for the widget
       this.html =
-        `<div id="empty_page_dialog">` +
+        `<div id="empty_page_dialog" style="position:fixed;">` +
         `    <fieldset class="pop_up">` +
         `        <div class="pop_elem_size pop_bottom_pad">` +
         `            <label for="pages">Number of pages</label>` +
