@@ -2,6 +2,8 @@ const app = Vue.createApp({
     methods: {
         popUpBlankPDF() {
             deactivateReaderControls();
+            resetRendering();
+            cleanUp();
             
             // Load css
             const css = "css/widget_style_blank_pdf.css";
@@ -25,6 +27,3 @@ const app = Vue.createApp({
 })
     
 app.mount('#widget_blank_pdf_app')
-
-
-function deactivateReaderControls() {}

@@ -1,3 +1,9 @@
+#blank_pdf_widget {
+    position: absolute;
+    width: 100%;
+    transform: translate(50%);
+}
+
 .pop_up legend {
     font-size: 18px;
 }

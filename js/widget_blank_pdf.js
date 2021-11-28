@@ -1,5 +1,5 @@
 const { PDFDocument } = PDFLib
-let numOfPages = 1;
+let defaultNumOfPages = 1;
 let pageWidth = 210;
 let pageHeight = 297;
 
@@ -13,7 +13,7 @@ async function createPdf() {
     const pageWFactor = (pageWidth * 1000) / 352.8;
     const pageHFactor = (pageHeight * 1000) / 352.8;
 
-    for (let i = 0; i < numOfPages; i++) {
+    for (let i = 0; i < defaultNumOfPages; i++) {
         page = pdfDoc.addPage()
         page.setMediaBox(0, 0, pageWFactor, pageHFactor)
     }
@@ -26,9 +26,9 @@ async function createPdf() {
 }
 
 function saveInput() {
-    numOfPages = document.getElementById('pages').valueAsNumber;
-    if (numOfPages < 5000 && numOfPages > 0) {
-        document.getElementById('pages').valueAsNumber = numOfPages;
+    defaultNumOfPages = document.getElementById('pages').valueAsNumber;
+    if (numOfPages < 5000 && defaultNumOfPages > 0) {
+        document.getElementById('pages').valueAsNumber = defaultNumOfPages;
     } else {
         //display warning -> dialog
     }
@@ -59,7 +59,7 @@ function saveInput() {
     this.Widget = function() {
       // HTML source code for the widget
       this.html =
-        `<div id="empty_page_dialog" style="position:fixed;">` +
+        `<div id="empty_page_dialog">` +
         `    <fieldset class="pop_up">` +
         `        <div class="pop_elem_size pop_bottom_pad">` +
         `            <label for="pages">Number of pages</label>` +

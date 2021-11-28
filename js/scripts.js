@@ -166,9 +166,15 @@ function enterZoomFactor(e) {
 function resetToDefaults() {
     document.getElementById("current_page").value = 1;
     document.getElementById("zoom_factor").value = 100 + "%";
-    document.getElementById("pdf_viewer").style.visibility = "visible";
-    document.getElementById("margin_buttons").style.visibility = "visible";
-    document.getElementById("reader_controls").style.visibility = "visible";
+    document.getElementById("pdf_viewer").style.display = "inline-block";
+    document.getElementById("margin_buttons").style.display = "inline-block";
+    document.getElementById("reader_controls").style.display = "inline-block";
+}
+
+function deactivateReaderControls() {
+    document.getElementById("pdf_viewer").style.display = "none";
+    document.getElementById("margin_buttons").style.display = "none";
+    document.getElementById("reader_controls").style.display = "none";
 }
 
 function toPercent(factor) {
