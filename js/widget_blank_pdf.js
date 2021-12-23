@@ -116,7 +116,7 @@ function saveInput() {
 
     function initializeWidget(self) {
       var container = document.getElementById(self.options.containerId);
-      if (container) {
+      if (container) { 
         // Appending the widget html code to the block which has the id "widget" in the demo page
         container.innerHTML = self.html;
       }
