@@ -1,5 +1,5 @@
 const { PDFDocument } = PDFLib
-let defaultNumOfPages = 1;
+let blankNumOfPages = 1;
 let pageWidth = 210;
 let pageHeight = 297;
 
@@ -13,7 +13,7 @@ async function createPdf() {
     const pageWFactor = (pageWidth * 1000) / 352.8;
     const pageHFactor = (pageHeight * 1000) / 352.8;
 
-    for (let i = 0; i < defaultNumOfPages; i++) {
+    for (let i = 0; i < blankNumOfPages; i++) {
         page = pdfDoc.addPage()
         page.setMediaBox(0, 0, pageWFactor, pageHFactor)
     }
@@ -26,9 +26,8 @@ async function createPdf() {
 }
 
 function saveInput() {
-    defaultNumOfPages = document.getElementById('pages').valueAsNumber;
-    if (numOfPages < 5000 && defaultNumOfPages > 0) {
-        document.getElementById('pages').valueAsNumber = defaultNumOfPages;
+    if (blankNumOfPages < 5000 && blankNumOfPages > 0) {
+        document.getElementById('pages').valueAsNumber = blankNumOfPages;
     } else {
         //display warning -> dialog
     }
@@ -55,6 +54,8 @@ function saveInput() {
 
 
 
+
+
 (function() {
     this.Widget = function() {
       // HTML source code for the widget
@@ -67,15 +68,14 @@ function saveInput() {
         `        </div>` +
         `        <div class="pop_elem_size pop_bottom_pad">` +
         `            <label for="size">DIN A page sizes</label>` +
-        `            <select class="btn btn-success" name="size" id="size">` +
-        `                    <option>DIN A0</option>` +
-        `                    <option>DIN A1</option>` +
-        `                    <option>DIN A2</option>` +
-        `                    <option>DIN A3</option>` +
-        `                    <option selected="selected">DIN A4</option>` +
-        `                    <option>DIN A5</option>` +
-        `                    <option>DIN A6</option>` +
-        `                    <option>DIN A7</option>` +
+        `            <select class="btn btn-success" name="size" id="dinasize">` +
+        `                    <option id="a1" class="dinaSel">DIN A1</option>` +
+        `                    <option id="a2" class="dinaSel">DIN A2</option>` +
+        `                    <option id="a3" class="dinaSel">DIN A3</option>` +
+        `                    <option id="a4" selected="selected" class="dinaSel">DIN A4</option>` +
+        `                    <option id="a5" class="dinaSel">DIN A5</option>` +
+        `                    <option id="a6" class="dinaSel">DIN A6</option>` +
+        `                    <option id="a7" class="dinaSel">DIN A7</option>` +
         `                </select>` +
         `        </div>` +
         `        <div class="pop_elem_size pop_bottom_pad">` +
@@ -126,6 +126,8 @@ function saveInput() {
             let width = document.getElementById('width').valueAsNumber;
             let height = document.getElementById('height').valueAsNumber;
             if (width > height) {
+                pageWidth = height;
+                pageHeight = width;
                 document.getElementById('width').value = height;
                 document.getElementById('height').value = width;
             }
@@ -135,23 +137,78 @@ function saveInput() {
             let width = document.getElementById('width').valueAsNumber;
             let height = document.getElementById('height').valueAsNumber;
             if (width < height) {
+                pageWidth = height;
+                pageHeight = width;
                 document.getElementById('width').value = height;
                 document.getElementById('height').value = width;
             }
         });
         
         document.getElementById('quadratic').addEventListener('click', function() {
-            let width = document.getElementById('width').valueAsNumber;
-            let height = document.getElementById('height').valueAsNumber;
+            const width = document.getElementById('width').valueAsNumber;
+            const height = document.getElementById('height').valueAsNumber;
             if (width < height || width > height) {
+                pageWidth = width;
+                pageHeight = width;
                 document.getElementById('height').value = width;
             }
         });
+
+        const dinaSelector = document.querySelector('#dinasize');
+        dinaSelector.addEventListener('click', function() {
+                const dinaSizes = setDINAFormats(dinaSelector.selectedIndex);
+                pageWidth = dinaSizes[0];
+                pageHeight = dinaSizes[1];
+                document.getElementById('width').value = dinaSizes[0];
+                document.getElementById('height').value = dinaSizes[1];
+            });
         
         document.getElementById('save').addEventListener('click', function() {
             saveInput();
             createPdf();
         });
+    }
+
+    function setDINAFormats(dinaID) {
+        let dinaSizes = [];
+        let w = 0;
+        let h = 0;
+        switch(dinaID) {
+            case 0:
+                w = 594;
+                h = 841;
+                break;
+            case 1:
+                w = 420;
+                h = 594;
+                break;
+            case 2:
+                w = 297;
+                h = 420;
+                break;
+            case 3:
+                w = 210;
+                h = 297;
+                break;
+            case 4:
+                w = 148;
+                h = 210;
+                break;
+            case 5:
+                w = 105;
+                h = 148;
+                break;
+            case 6:
+                w = 74;
+                h = 105;
+                break;
+            default:
+                w = 210;
+                h = 297;
+        }
+        dinaSizes[0] = w;
+        dinaSizes[1] = h;
+        return dinaSizes;
     }
 })();
   
