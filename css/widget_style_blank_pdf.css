@@ -1,7 +1,13 @@
+#empty_page_dialog {
+    position: absolute;
+    top: 78px;
+}
+
 #blank_pdf_widget {
     position: absolute;
     width: 100%;
-    transform: translate(50%);
+    display: flex;
+    justify-content: center;
 }
 
 .pop_up legend {
