@@ -1,7 +1,7 @@
 const { PDFDocument } = PDFLib
 let blankNumOfPages = 1;
-let pageWidth = 210;
-let pageHeight = 297;
+let blankPageWidth = 210;
+let blankPageHeight = 297;
 
 async function createPdf() {
     // Create a new PDFDocument
@@ -10,8 +10,8 @@ async function createPdf() {
     let page;
 
     //page library factor 352.8
-    const pageWFactor = (pageWidth * 1000) / 352.8;
-    const pageHFactor = (pageHeight * 1000) / 352.8;
+    const pageWFactor = (blankPageWidth * 1000) / 352.8;
+    const pageHFactor = (blankPageHeight * 1000) / 352.8;
 
     for (let i = 0; i < blankNumOfPages; i++) {
         page = pdfDoc.addPage()
@@ -25,36 +25,16 @@ async function createPdf() {
     download(pdfBytes, "blank_pdf.pdf", "application/pdf");
 }
 
-function saveInput() {
-    if (blankNumOfPages < 5000 && blankNumOfPages > 0) {
-        document.getElementById('pages').valueAsNumber = blankNumOfPages;
-    } else {
-        //display warning -> dialog
-    }
+function blankSaveInput() {
+    blankNumOfPages = document.getElementById('blank_pages').valueAsNumber;
+    document.getElementById('blank_pages').value = blankNumOfPages;
 
-    pageWidth = document.getElementById('width').valueAsNumber;
+    blankPageWidth = document.getElementById('blank_width').valueAsNumber;
+    document.getElementById('blank_width').value = blankPageWidth;
 
-    //min: DIN A7, max DIN A0
-    if (pageWidth >= 74 && pageWidth <= 1189) {
-        document.getElementById('width').value = pageWidth;
-    } else {
-        //warning
-    }
-
-    pageHeight = document.getElementById('height').valueAsNumber;
-
-    //min: DIN A7, max DIN A0
-    if (pageHeight >= 74 && pageHeight <= 1189) {
-        document.getElementById('height').value = pageHeight;
-    } else {
-        //warning window
-    }
+    blankPageHeight = document.getElementById('blank_height').valueAsNumber;
+    document.getElementById('blank_height').value = blankPageHeight;
 }
-
-
-
-
-
 
 (function() {
     this.Widget = function() {
@@ -64,7 +44,7 @@ function saveInput() {
         `    <fieldset class="pop_up">` +
         `        <div class="pop_elem_size pop_bottom_pad">` +
         `            <label for="pages">Number of pages</label>` +
-        `            <input id="pages" type="number" value="1" />` +
+        `            <input id="blank_pages" type="number" value="1" />` +
         `        </div>` +
         `        <div class="pop_elem_size pop_bottom_pad">` +
         `            <label for="size">DIN A page sizes</label>` +
@@ -93,78 +73,103 @@ function saveInput() {
         `        </div>` +
         `        <div class="pop_elem_size pop_bottom_pad">` +
         `            <label for="width">Width in mm</label>` +
-        `            <input id="width" type="number" value="297" />` +
+        `            <input id="blank_width" type="number" value="297" />` +
         `        </div>` +
         `        <div class="pop_elem_size pop_bottom_pad">` +
         `            <label for="height">Height in mm</label>` +
-        `            <input id="height" type="number" value="210" />` +
+        `            <input id="blank_height" type="number" value="210" />` +
         `        </div>` +
         `        <div class="pop_elem_size">` +
-        `            <button id="save" class="btn btn-success">Save</button>` +
-        `            <button id="cancel" class="btn btn-success">Cancel</button>` +
+        `            <button id="blank_save" class="btn btn-success">Save</button>` +
+        `            <button id="blank_cancel" class="btn btn-success">Cancel</button>` +
         `        </div>` +
         `    </fieldset>` +  
         `</div>`;
-      var defaults = {
+      let defaults = {
         containerId: "blank_pdf_widget",
       };
+
       this.options = defaults;
-  
       initializeWidget(this);
       initialiseEvents(this);
     };
 
     function initializeWidget(self) {
-      var container = document.getElementById(self.options.containerId);
+      let container = document.getElementById(self.options.containerId);
       if (container) { 
         // Appending the widget html code to the block which has the id "widget" in the demo page
         container.innerHTML = self.html;
       }
     }
+
+    function restrictInputValues(inputId, valToRestrict, min, max) {
+        valToRestrict = document.getElementById(inputId).valueAsNumber;
+        if (valToRestrict >= min && valToRestrict <= max) {
+            document.getElementById(inputId).value = valToRestrict;
+        } else {
+            if (valToRestrict < min) {
+                document.getElementById(inputId).value = min;
+            } else if (valToRestrict > max) {
+                document.getElementById(inputId).value = max;
+            }
+        }
+    }
+
+    function initRestrictInputEvents(inputId, valToRestrict, min, max) {
+        const inputElem = document.getElementById(inputId);
+        inputElem.addEventListener('change', () => restrictInputValues(inputId, valToRestrict, min, max));
+        const changeEvent = new Event('change');
+        inputElem.dispatchEvent(changeEvent);
+    }
+
     function initialiseEvents(self) {
+        initRestrictInputEvents('blank_pages', blankNumOfPages, 1, 1999);
+        initRestrictInputEvents('blank_width', blankPageWidth, 74, 1189);
+        initRestrictInputEvents('blank_height', blankPageHeight, 74, 1189);
+
+        const dinaSelector = document.querySelector('#dinasize');
+        dinaSelector.addEventListener('click', function() {
+            const dinaSizes = setDINAFormats(dinaSelector.selectedIndex);
+            blankPageWidth = dinaSizes[0];
+            blankPageHeight = dinaSizes[1];
+            document.getElementById('blank_width').value = dinaSizes[0];
+            document.getElementById('blank_height').value = dinaSizes[1];
+        });
+
         document.getElementById('portrait').addEventListener('click', function() {
-            let width = document.getElementById('width').valueAsNumber;
-            let height = document.getElementById('height').valueAsNumber;
+            let width = document.getElementById('blank_width').valueAsNumber;
+            let height = document.getElementById('blank_height').valueAsNumber;
             if (width > height) {
-                pageWidth = height;
-                pageHeight = width;
-                document.getElementById('width').value = height;
-                document.getElementById('height').value = width;
+                blankPageWidth = height;
+                blankPageHeight = width;
+                document.getElementById('blank_width').value = height;
+                document.getElementById('blank_height').value = width;
             }
         });
         
         document.getElementById('landscape').addEventListener('click', function() {
-            let width = document.getElementById('width').valueAsNumber;
-            let height = document.getElementById('height').valueAsNumber;
+            let width = document.getElementById('blank_width').valueAsNumber;
+            let height = document.getElementById('blank_height').valueAsNumber;
             if (width < height) {
-                pageWidth = height;
-                pageHeight = width;
-                document.getElementById('width').value = height;
-                document.getElementById('height').value = width;
+                blankPageWidth = height;
+                blankPageHeight = width;
+                document.getElementById('blank_width').value = height;
+                document.getElementById('blank_height').value = width;
             }
         });
         
         document.getElementById('quadratic').addEventListener('click', function() {
-            const width = document.getElementById('width').valueAsNumber;
-            const height = document.getElementById('height').valueAsNumber;
+            const width = document.getElementById('blank_width').valueAsNumber;
+            const height = document.getElementById('blank_height').valueAsNumber;
             if (width < height || width > height) {
-                pageWidth = width;
-                pageHeight = width;
-                document.getElementById('height').value = width;
+                blankPageWidth = width;
+                blankPageHeight = width;
+                document.getElementById('blank_height').value = width;
             }
         });
-
-        const dinaSelector = document.querySelector('#dinasize');
-        dinaSelector.addEventListener('click', function() {
-                const dinaSizes = setDINAFormats(dinaSelector.selectedIndex);
-                pageWidth = dinaSizes[0];
-                pageHeight = dinaSizes[1];
-                document.getElementById('width').value = dinaSizes[0];
-                document.getElementById('height').value = dinaSizes[1];
-            });
         
-        document.getElementById('save').addEventListener('click', function() {
-            saveInput();
+        document.getElementById('blank_save').addEventListener('click', function() {
+            blankSaveInput();
             createPdf();
         });
     }
