@@ -1,4 +1,7 @@
-const app = Vue.createApp({
+let cssBlankPDFWidget;
+let jsBlankPDFWidget;
+
+const appBlankPDFDialogue = Vue.createApp({
     methods: {
         popUpBlankPDF() {
             deactivateReaderControls();
@@ -10,20 +13,20 @@ const app = Vue.createApp({
             // Load js
             const js = "js/widget_blank_pdf.js";
 
-            link = document.createElement("link");
-            link.rel = "stylesheet";
-            link.href = css;
+            cssBlankPDFWidget = document.createElement("link");
+            cssBlankPDFWidget.rel = "stylesheet";
+            cssBlankPDFWidget.href = css;
             // Appending stylesheet in the head tag
-            document.getElementsByTagName("head")[0].appendChild(link);
+            document.getElementsByTagName("head")[0].appendChild(cssBlankPDFWidget);
 
-            script = document.createElement("script");
-            script.async = 1;
-            script.src = js;
+            jsBlankPDFWidget = document.createElement("script");
+            jsBlankPDFWidget.async = 1;
+            jsBlankPDFWidget.src = js;
             // Adding the script in the script tag
             let p = document.getElementsByTagName("script")[0];
-            p.parentNode.insertBefore(script, p);
+            p.parentNode.insertBefore(jsBlankPDFWidget, p);
         }
     }
 })
     
-app.mount('#widget_blank_pdf_app')
+appBlankPDFDialogue.mount('#widget_blank_pdf_app');

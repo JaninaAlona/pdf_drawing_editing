@@ -172,6 +172,12 @@ function blankSaveInput() {
             blankSaveInput();
             createPdf();
         });
+
+        document.getElementById('blank_cancel').addEventListener('click', function() {
+            document.getElementsByTagName("script")[0].parentNode.removeChild(jsBlankPDFWidget);
+            document.getElementsByTagName("head")[0].removeChild(cssBlankPDFWidget);
+            document.getElementById("empty_page_dialog").remove();
+        });
     }
 
     function setDINAFormats(dinaID) {
