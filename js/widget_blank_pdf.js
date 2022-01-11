@@ -21,6 +21,8 @@ async function createPdf() {
     // Serialize the PDFDocument to bytes (a Uint8Array)
     const pdfBytes = await pdfDoc.save()
 
+    loadPDFInViewer(pdfBytes);
+
     // Trigger the browser to download the PDF document
     download(pdfBytes, "blank_pdf.pdf", "application/pdf");
 }
@@ -171,13 +173,18 @@ function blankSaveInput() {
         document.getElementById('blank_save').addEventListener('click', function() {
             blankSaveInput();
             createPdf();
+            closeBlankPDFWidget();
         });
 
         document.getElementById('blank_cancel').addEventListener('click', function() {
-            document.getElementsByTagName("script")[0].parentNode.removeChild(jsBlankPDFWidget);
-            document.getElementsByTagName("head")[0].removeChild(cssBlankPDFWidget);
-            document.getElementById("empty_page_dialog").remove();
+            closeBlankPDFWidget();
         });
+    }
+
+    function closeBlankPDFWidget() {
+        document.getElementsByTagName("script")[0].parentNode.removeChild(jsBlankPDFWidget);
+        document.getElementsByTagName("head")[0].removeChild(cssBlankPDFWidget);
+        document.getElementById("empty_page_dialog").remove();
     }
 
     function setDINAFormats(dinaID) {

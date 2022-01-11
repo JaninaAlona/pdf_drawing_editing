@@ -215,21 +215,22 @@ function toFactor(percentage) {
     return div100Float;
 }
 
+function loadPDFInViewer(target) {
+    const typedarray = new Uint8Array(target);
+    const loadingTask = pdfjsLib.getDocument(typedarray);
+    loadingTask.promise.then(pdf => {
+        resetToDefaults();
+        pdfState.pdf = pdf;
+        pdfState.pdf.getPage(1).then(renderAllPages);
+    });
+}
+
 document.getElementById('inputfile').onchange = function(e) {
     cleanUp();
 
     const file = e.target.files[0];
     const fileReader = new FileReader();
-    fileReader.onload = function() {
-        const typedarray = new Uint8Array(this.result);
-        const loadingTask = pdfjsLib.getDocument(typedarray);
-        loadingTask.promise.then(pdf => {
-            resetToDefaults();
-            pdfState.pdf = pdf;
-            pdfState.pdf.getPage(1).then(renderAllPages);
-        });
-
-    }
+    fileReader.onload = loadPDFInViewer(this.result);
     fileReader.readAsArrayBuffer(file);
 }
 
