@@ -1,8 +1,3 @@
-const { PDFDocument } = PDFLib
-let blankNumOfPages = 1;
-let blankPageWidth = 210;
-let blankPageHeight = 297;
-
 async function createPdf() {
     // Create a new PDFDocument
     const pdfDoc = await PDFDocument.create()
@@ -21,6 +16,7 @@ async function createPdf() {
     // Serialize the PDFDocument to bytes (a Uint8Array)
     const pdfBytes = await pdfDoc.save()
 
+    cleanUp();
     loadPDFInViewer(pdfBytes);
 
     // Trigger the browser to download the PDF document

@@ -1,5 +1,10 @@
+const { PDFDocument } = PDFLib;
+
 let cssBlankPDFWidget;
 let jsBlankPDFWidget;
+let blankNumOfPages = 1;
+let blankPageWidth = 210;
+let blankPageHeight = 297;
 
 const appBlankPDFDialogue = Vue.createApp({
     methods: {

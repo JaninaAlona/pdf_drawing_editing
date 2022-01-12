@@ -227,10 +227,18 @@ function loadPDFInViewer(target) {
 
 document.getElementById('inputfile').onchange = function(e) {
     cleanUp();
-
     const file = e.target.files[0];
     const fileReader = new FileReader();
-    fileReader.onload = loadPDFInViewer(this.result);
+    fileReader.onload = function() {
+        const typedarray = new Uint8Array(this.result);
+        const loadingTask = pdfjsLib.getDocument(typedarray);
+        loadingTask.promise.then(pdf => {
+            resetToDefaults();
+            pdfState.pdf = pdf;
+            pdfState.pdf.getPage(1).then(renderAllPages);
+        });
+
+    }
     fileReader.readAsArrayBuffer(file);
 }
 
