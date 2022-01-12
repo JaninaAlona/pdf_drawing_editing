@@ -167,14 +167,11 @@ function resetToDefaults() {
     document.getElementById("current_page").value = 1;
     document.getElementById("zoom_factor").value = 100 + "%";
     document.getElementById("pdf_viewer").style.display = "block";
-    document.getElementById("pdf_container").style.display ="flex";
-    document.getElementById("margin_buttons").style.display = "block";
-    document.getElementById("reader_controls").style.display = "block";
+    document.getElementById("reader_controls").style.display = "flex";
 }
 
 function deactivateReaderControls() {
     document.getElementById("pdf_viewer").style.display = "none";
-    document.getElementById("margin_buttons").style.display = "none";
     document.getElementById("reader_controls").style.display = "none";
 }
 
@@ -222,6 +219,8 @@ function loadPDFInViewer(target) {
         resetToDefaults();
         pdfState.pdf = pdf;
         pdfState.pdf.getPage(1).then(renderAllPages);
+        tabs.init;
+        document.getElementById("tab_manager").style.display = "block";
     });
 }
 
@@ -237,7 +236,8 @@ document.getElementById('inputfile').onchange = function(e) {
             pdfState.pdf = pdf;
             pdfState.pdf.getPage(1).then(renderAllPages);
         });
-
+        tabs.init;
+        document.getElementById("tab_manager").style.display = "block";
     }
     fileReader.readAsArrayBuffer(file);
 }

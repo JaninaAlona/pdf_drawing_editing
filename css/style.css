@@ -4,28 +4,18 @@
 
 #buttons {
     position: fixed;
+    top: 0px;
     background: #333;
     width: 100%;
     height: 58px;
+    z-index: 10;
 }
 
-#margin_buttons {
-    height: 78px;
-    background: #333;
-    display:none;
-}
-
-.file_manip {
+.file_manip, #create_pdf {
     float: left;
     margin: 10px 5px 10px 10px;
-}
-
-#create_pdf {
-    float: left;
-    margin: 10px 5px 10px 10px;
-    position: fixed;
-    left: 110px;
-    top: 0px;
+    position: relative;
+    z-index: 9;
 }
 
 .pages {
@@ -37,21 +27,11 @@
     font-weight: bold;
 }
 
-#pdf_reader_bg {
-    background: #333;
-    width: 100%;
-    height: 100%;
-}
-
-#pdf_container {
-    justify-content: center;
-    width: 100%;
-    height: 100%;
-}
-
 #reader_controls {
     background: #333;
+    display: none;
+    justify-content: center;
+    width: 100%;
     position: absolute;
-    transform: translate(50%);
-    display:none;
+    z-index: 8;
 }

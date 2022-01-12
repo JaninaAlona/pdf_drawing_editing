@@ -1,0 +1,49 @@
+/* (A) CONTAINERS */
+#tab_manager {
+    display: none;
+    position: absolute;
+    top: 58px;
+    width: 100%;
+    height: 58px;
+    z-index: 5;
+}
+
+.open_pdf_tab_nav {
+    background-color: #dabdb6;
+    position: fixed;
+    width: 100%;
+    height: 58px;
+    z-index: 4;
+}
+
+/* (A) CONTAINERS */
+.open_pdf_tab_nav, .reader_tab_con {
+    box-sizing: border-box;
+}
+
+/* (B) TAB NAVIGATION */
+.open_pdf_tab_nav .open_pdf_tab_elem {
+    display: inline-block;
+    color: #333;
+}
+.open_pdf_tab_nav .open_pdf_tab_elem.active { background: #a71515; }
+
+/* (C) TAB CONTAINER & SECTIONS */
+.reader_tab_con {
+    background: #333;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    position: absolute;
+    top: 58px; 
+    z-index: 3;
+}
+
+
+.reader_tab_con .reader_tab_sec { 
+    display: none;
+}
+
+  
+  
+.reader_tab_con .reader_tab_sec.active { display: block; }
