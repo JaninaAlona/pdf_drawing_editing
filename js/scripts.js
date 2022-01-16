@@ -219,7 +219,6 @@ function loadPDFInViewer(target) {
         resetToDefaults();
         pdfState.pdf = pdf;
         pdfState.pdf.getPage(1).then(renderAllPages);
-        tabs.init;
         document.getElementById("tab_manager").style.display = "block";
     });
 }
@@ -236,7 +235,6 @@ document.getElementById('inputfile').onchange = function(e) {
             pdfState.pdf = pdf;
             pdfState.pdf.getPage(1).then(renderAllPages);
         });
-        tabs.init;
         document.getElementById("tab_manager").style.display = "block";
     }
     fileReader.readAsArrayBuffer(file);
