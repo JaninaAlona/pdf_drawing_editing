@@ -10,8 +10,7 @@ const appBlankPDFDialogue = Vue.createApp({
     methods: {
         popUpBlankPDF() {
             deactivateReaderControls();
-            resetRendering();
-            cleanUp();
+            document.getElementById("inputfile").disabled = true;
             
             // Load css
             const css = "css/widget_style_blank_pdf.css";

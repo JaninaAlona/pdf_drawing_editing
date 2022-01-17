@@ -219,7 +219,7 @@ function loadPDFInViewer(target) {
         resetToDefaults();
         pdfState.pdf = pdf;
         pdfState.pdf.getPage(1).then(renderAllPages);
-        document.getElementById("tab_manager").style.display = "block";
+        document.getElementById("pdf_viewer_con").style.display = "flex";
     });
 }
 
@@ -235,7 +235,7 @@ document.getElementById('inputfile').onchange = function(e) {
             pdfState.pdf = pdf;
             pdfState.pdf.getPage(1).then(renderAllPages);
         });
-        document.getElementById("tab_manager").style.display = "block";
+        document.getElementById("pdf_viewer_con").style.display = "flex";
     }
     fileReader.readAsArrayBuffer(file);
 }

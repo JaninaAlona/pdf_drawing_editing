@@ -95,7 +95,6 @@ function blankSaveInput() {
     function initializeWidget(self) {
       let container = document.getElementById(self.options.containerId);
       if (container) { 
-        // Appending the widget html code to the block which has the id "widget" in the demo page
         container.innerHTML = self.html;
       }
     }
@@ -169,6 +168,7 @@ function blankSaveInput() {
         document.getElementById('blank_save').addEventListener('click', function() {
             blankSaveInput();
             createPdf();
+            cleanUp();
             closeBlankPDFWidget();
         });
 
@@ -181,6 +181,7 @@ function blankSaveInput() {
         document.getElementsByTagName("script")[0].parentNode.removeChild(jsBlankPDFWidget);
         document.getElementsByTagName("head")[0].removeChild(cssBlankPDFWidget);
         document.getElementById("empty_page_dialog").remove();
+        document.getElementById("inputfile").disabled = false;
     }
 
     function setDINAFormats(dinaID) {
