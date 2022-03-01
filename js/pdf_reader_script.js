@@ -178,7 +178,7 @@ function deactivateReaderControls() {
 function toPercent(factor) {
     let strFloat = factor.toString();
     let strFTimes100 = "";
-    let digits = strFloat.split('.');
+    let digits = strFloat.split('.'); 
     if (strFloat.length == 3) {
         if (digits[0] == '0') {
             strFTimes100 = digits[1] + '0';
@@ -223,6 +223,7 @@ function loadPDFInViewer(target) {
     });
 }
 
+
 document.getElementById('inputfile').onchange = function(e) {
     cleanUp();
     const file = e.target.files[0];
@@ -238,7 +239,7 @@ document.getElementById('inputfile').onchange = function(e) {
         document.getElementById("pdf_viewer_con").style.display = "flex";
     }
     fileReader.readAsArrayBuffer(file);
-}
+};
 
 document.getElementById('go_previous').addEventListener('click', goPrevPage);
 document.getElementById('go_next').addEventListener('click', goNextPage);
