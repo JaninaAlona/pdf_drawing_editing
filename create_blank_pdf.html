@@ -41,51 +41,53 @@
     <a href="create_blank_pdf.html" target="_blank"><button id="create_pdf" class="btn btn-success">Create</button></a>
     <div id="canceler">
         <div v-if="noCancle" id="empty_page_dialog">
-            <div id="blank_pdf_widget">
-                <div class="pop_up">
-                    <fieldset>
-                        <div class="pop_elem_size pop_bottom_pad">
-                            <label for="pages">Number of pages</label>
-                            <input id="blank_pages" type="number" value="1" />
-                        </div>
-                        <div class="pop_elem_size pop_bottom_pad">
-                            <label for="size">DIN A page sizes</label>
-                            <select class="btn btn-success" name="size" id="dinasize">
-                                    <option id="a1" class="dinaSel">DIN A1</option>
-                                    <option id="a2" class="dinaSel">DIN A2</option>
-                                    <option id="a3" class="dinaSel">DIN A3</option>
-                                    <option id="a4" selected="selected" class="dinaSel">DIN A4</option>
-                                    <option id="a5" class="dinaSel">DIN A5</option>
-                                    <option id="a6" class="dinaSel">DIN A6</option>
-                                    <option id="a7" class="dinaSel">DIN A7</option>
-                                </select>
-                        </div>
-                        <div class="pop_elem_size pop_bottom_pad">
-                            <legend>Orientation</legend>
-                            <div>
-                                <label for="portrait">Portrait</label>
-                                <input type="radio" name="orientation" id="portrait" checked class="space_btw_radio">
-                                <label for="landscape">Landscape</label>
-                                <input type="radio" name="orientation" id="landscape">
+            <div class="blank_pdf_widget_con">
+                <div id="blank_pdf_widget">
+                    <div class="pop_up">
+                        <fieldset>
+                            <div class="pop_elem_size pop_bottom_pad">
+                                <label for="pages">Number of pages</label>
+                                <input id="blank_pages" type="number" value="1" />
                             </div>
-                            <div>
-                                <label for="quadratic">Quadratic</label>
-                                <input type="radio" name="orientation" id="quadratic">
+                            <div class="pop_elem_size pop_bottom_pad">
+                                <label for="size">DIN A page sizes</label>
+                                <select class="btn btn-success" name="size" id="dinasize">
+                                        <option id="a1" class="dinaSel">DIN A1</option>
+                                        <option id="a2" class="dinaSel">DIN A2</option>
+                                        <option id="a3" class="dinaSel">DIN A3</option>
+                                        <option id="a4" selected="selected" class="dinaSel">DIN A4</option>
+                                        <option id="a5" class="dinaSel">DIN A5</option>
+                                        <option id="a6" class="dinaSel">DIN A6</option>
+                                        <option id="a7" class="dinaSel">DIN A7</option>
+                                    </select>
                             </div>
-                        </div>
-                        <div class="pop_elem_size pop_bottom_pad">
-                            <label for="width">Width in mm</label>
-                            <input id="blank_width" type="number" value="297" />
-                        </div>
-                        <div class="pop_elem_size pop_bottom_pad">
-                            <label for="height">Height in mm</label>
-                            <input id="blank_height" type="number" value="210" />
-                        </div>
-                        <div class="pop_elem_size">
-                            <button id="blank_save" class="btn btn-success">Save</button>
-                            <button @click="toggleCancle" id="blank_cancel" class="btn btn-success">Cancel</button>
-                        </div>
-                    </fieldset> 
+                            <div class="pop_elem_size pop_bottom_pad">
+                                <legend>Orientation</legend>
+                                <div>
+                                    <label for="portrait">Portrait</label>
+                                    <input type="radio" name="orientation" id="portrait" checked class="space_btw_radio">
+                                    <label for="landscape">Landscape</label>
+                                    <input type="radio" name="orientation" id="landscape">
+                                </div>
+                                <div>
+                                    <label for="quadratic">Quadratic</label>
+                                    <input type="radio" name="orientation" id="quadratic">
+                                </div>
+                            </div>
+                            <div class="pop_elem_size pop_bottom_pad">
+                                <label for="width">Width in mm</label>
+                                <input id="blank_width" type="number" value="297" />
+                            </div>
+                            <div class="pop_elem_size pop_bottom_pad">
+                                <label for="height">Height in mm</label>
+                                <input id="blank_height" type="number" value="210" />
+                            </div>
+                            <div class="pop_elem_size">
+                                <button id="blank_save" class="btn btn-success">Save</button>
+                                <button @click="toggleCancle" id="blank_cancel" class="btn btn-success">Cancel</button>
+                            </div>
+                        </fieldset> 
+                    </div>
                 </div>
             </div>
         </div>
