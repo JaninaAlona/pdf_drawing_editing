@@ -1,34 +1,58 @@
-const { PDFDocument } = PDFLib;
-//import { PDFDocument} from 'pdf-lib'
+const { PDFDocument } = PDFLib
+
+let noCancle = true;
 
 let blankNumOfPagesCount = 1;
 let blankPageWidth = 210;
 let blankPageHeight = 297;
 
-async function createPdf() {
-    // Create a new PDFDocument
-    const pdfDoc = await PDFDocument.create()
+const canceler = Vue.createApp({
+    data() {
+        return {
+            noCancle: true
+        }
+    },
+    mounted() {
+        initialiseEvents();
+    },
 
-    let page;
+    methods: {
+        toggleCancle() {
+            this.noCancle = false
+        },
+        async savePDF() {
+            blankSaveInput();
 
-    //page library factor 352.8
-    const pageWFactor = (blankPageWidth * 1000) / 352.8;
-    const pageHFactor = (blankPageHeight * 1000) / 352.8;
+            // Create a new PDFDocument
+            let pdfDoc = await PDFDocument.create()
 
-    for (let i = 0; i < blankNumOfPagesCount; i++) {
-        page = pdfDoc.addPage()
-        page.setMediaBox(0, 0, pageWFactor, pageHFactor)
+            let page;
+
+            //page library factor 352.8
+            const pageWFactor = (blankPageWidth * 1000) / 352.8;
+            const pageHFactor = (blankPageHeight * 1000) / 352.8;
+
+            for (let i = 0; i < blankNumOfPagesCount; i++) {
+                page = pdfDoc.addPage()
+                page.setMediaBox(0, 0, pageWFactor, pageHFactor)
+            }
+
+            // Serialize the PDFDocument to bytes (a Uint8Array)
+            const pdfBytes = await pdfDoc.save()
+
+            cleanUp();
+            loadPDFInViewer(pdfBytes);
+
+            // Trigger the browser to download the PDF document
+            download(pdfBytes, "blank_pdf.pdf", "application/pdf");
+            cleanUp();
+            this.noCancle = false;
+        }
     }
+});
 
-    // Serialize the PDFDocument to bytes (a Uint8Array)
-    const pdfBytes = await pdfDoc.save()
+canceler.mount('#canceler');
 
-    cleanUp();
-    loadPDFInViewer(pdfBytes);
-
-    // Trigger the browser to download the PDF document
-    download(pdfBytes, "blank_pdf.pdf", "application/pdf");
-}
 
 function blankSaveInput() {
     blankNumOfPagesCount = document.getElementById('blank_pages').valueAsNumber;
@@ -63,7 +87,7 @@ function initRestrictInputEvents(inputId, valToRestrict, min, max) {
     inputElem.dispatchEvent(changeEvent);
 }
 
-function initialiseEvents(self) {
+function initialiseEvents() {
     initRestrictInputEvents('blank_pages', blankNumOfPagesCount, 1, 1999);
     initRestrictInputEvents('blank_width', blankPageWidth, 74, 1189);
     initRestrictInputEvents('blank_height', blankPageHeight, 74, 1189);
@@ -107,12 +131,6 @@ function initialiseEvents(self) {
             blankPageHeight = width;
             document.getElementById('blank_height').value = width;
         }
-    });
-    
-    document.getElementById('blank_save').addEventListener('click', function() {
-        blankSaveInput();
-        createPdf();
-        cleanUp();
     });
 }
 
@@ -158,5 +176,3 @@ function setDINAFormats(dinaID) {
     dinaSizes[1] = h;
     return dinaSizes;
 }
-
-initialiseEvents(self);
