@@ -1,4 +1,4 @@
-#blank_pdf_widget {
+.pdf_widget {
     position: absolute;
     top: 78px;
     width: 100%;
@@ -18,10 +18,17 @@
 .pop_up {
     background-color: #dabdb6;
     padding: 20px;
-    width: 250px;
     border-radius: 2px;
+}
+
+#create_pop_up {
+    width: 250px;
 }
 
 .pop_bottom_pad {
     padding-bottom: 20px;
+}
+
+#split_pop_up {
+    width: 500px;
 }

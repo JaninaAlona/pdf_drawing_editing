@@ -11,7 +11,7 @@
     z-index: 10;
 }
 
-.file_manip, #create_pdf {
+.file_manip, #create_pdf, .button_layout {
     float: left;
     margin: 10px 5px 10px 10px;
     position: relative;

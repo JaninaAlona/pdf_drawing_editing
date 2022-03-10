@@ -241,6 +241,7 @@ document.getElementById('inputfile').onchange = function(e) {
     fileReader.readAsArrayBuffer(file);
 };
 
+
 document.getElementById('go_previous').addEventListener('click', goPrevPage);
 document.getElementById('go_next').addEventListener('click', goNextPage);
 document.getElementById('current_page').addEventListener('keyup', enterPageNum);

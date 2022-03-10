@@ -1,6 +1,5 @@
 const { PDFDocument } = PDFLib
 
-let noCancle = true;
 
 let blankNumOfPagesCount = 1;
 let blankPageWidth = 210;
@@ -13,7 +12,7 @@ const canceler = Vue.createApp({
         }
     },
     mounted() {
-        initialiseEvents();
+        initialiseBlankEvents();
     },
 
     methods: {
@@ -51,7 +50,7 @@ const canceler = Vue.createApp({
     }
 });
 
-canceler.mount('#canceler');
+canceler.mount('#create_blank_app');
 
 
 function blankSaveInput() {
@@ -87,7 +86,7 @@ function initRestrictInputEvents(inputId, valToRestrict, min, max) {
     inputElem.dispatchEvent(changeEvent);
 }
 
-function initialiseEvents() {
+function initialiseBlankEvents() {
     initRestrictInputEvents('blank_pages', blankNumOfPagesCount, 1, 1999);
     initRestrictInputEvents('blank_width', blankPageWidth, 74, 1189);
     initRestrictInputEvents('blank_height', blankPageHeight, 74, 1189);

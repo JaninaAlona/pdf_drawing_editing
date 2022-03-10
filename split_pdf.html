@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Javascript PDF Editor</title>
     <link rel="stylesheet" type="text/css" href="css/index_reader_style.css">
+    <link rel="stylesheet" type="text/css" href="css/widget_style.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">    <script type="text/javascript" src="js/pdf.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.4.0/dist/pdf-lib.min.js"></script>
     <script type="text/javascript" src="js/pdf.worker.min.js"></script>
@@ -15,13 +16,15 @@
     <script src="https://unpkg.com/vue@3.0.2"></script>
 
 
+
 <body>
     <header id="buttons">
         <div id="start_menu">
             <div class="file_manip">
                 <input type="file" id="inputfile" class="filestyle" data-btnClass="btn-success" data-input="false" accept=".pdf">
             </div>
-            <a href="create_blank_pdf.html" target="_blank"><button id="create_pdf" class="btn btn-success">Create</button></a>
+            <a href="create_blank_pdf.html" target="_blank"><button id="create_pdf" class="btn btn-success button_layout">Create</button></a>
+            <a href="split_pdf.html" target="_blank"><button id="split" class="btn btn-success button_layout">Split</button></a>
         </div>
         <div id="reader_controls">
             <button id="go_previous" class="pages btn btn-success file_manip">Previous</button>
@@ -35,11 +38,36 @@
     <div id="pdf_viewer_con">
         <div id="pdf_viewer"></div>  
     </div>
+    <div id="split_app">
+        <div v-if="noCancle">
+            <div class="pdf_widget">
+                <div id="split_pop_up" class="pop_up">
+                <fieldset>
+                    <div class="pop_elem_size pop_bottom_pad">
+                        <input @input="selectFile" type="file" id="inputsplitfile" class="filestyle" data-btnClass="btn-success" data-input="false" accept=".pdf">
+                        <label for="after" class="space_btw_radio">Split frequently after</label>
+                        <select class="btn btn-success" name="after" id="split_after">
+                            <option @click="selectRegularSplit(0)" id="none_sel" selected="true">none</option>
+                            <option @click="selectRegularSplit(1)" id="every_p">every page</option>
+                            <option @click="selectRegularSplit(2)" id="odd_p">odd pages</option>
+                            <option @click="selectRegularSplit(3)" id="even_p">even pages</option>
+                        </select>
+                    </div>
+                    <div class="pop_elem_size">
+                        <button @click="saveSplittedPDFs" class="btn btn-success space_btw_radio">Save</button>
+                        <button @click="toggleCancle" class="btn btn-success">Cancel</button>
+                    </div>
+                </fieldset>
+                </div>
+            </div>
+        </div>
+    </div>
     <script type="text/javascript" src="js/bootstrap-filestyle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <script type="text/javascript" src="js/pdf_reader_script.js"></script>
+    <script type="text/javascript" src="js/split_pdf_script.js"></script>
 </body>
 
 </html>

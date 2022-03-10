@@ -9,7 +9,7 @@
     <link rel="stylesheet" type="text/css" href="css/index_reader_style.css">
     <link rel="stylesheet" type="text/css" href="css/create_blank_pdf_style.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">    <script type="text/javascript" src="js/pdf.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="css/create_blank_pdf_style.css">
+    <link rel="stylesheet" type="text/css" href="css/widget_style.css">
     <link rel="stylesheet" type="text/css" href="css/index_reader_style.css">
     <script src="js/pdf-lib.min.js"></script>
     <script type="text/javascript" src="js/pdf.worker.min.js"></script>
@@ -25,6 +25,7 @@
                 <input type="file" id="inputfile" class="filestyle" data-btnClass="btn-success" data-input="false" accept=".pdf">
             </div>
             <a href="create_blank_pdf.html" target="_blank"><button id="create_pdf" class="btn btn-success">Create</button></a>
+            <a href="split_pdf.html" target="_blank"><button id="split" class="btn btn-success button_layout">Split</button></a>
         </div>
         <div id="reader_controls">
             <button id="go_previous" class="pages btn btn-success file_manip">Previous</button>
@@ -38,10 +39,10 @@
     <div id="pdf_viewer_con">
         <div id="pdf_viewer"></div>  
     </div>
-    <div id="canceler">
+    <div id="create_blank_app">
         <div v-if="noCancle">
-            <div id="blank_pdf_widget">
-                <div class="pop_up">
+            <div class="pdf_widget">
+                <div id="create_pop_up" class="pop_up">
                     <fieldset>
                         <div class="pop_elem_size pop_bottom_pad">
                             <label for="pages">Number of pages</label>
@@ -50,14 +51,14 @@
                         <div class="pop_elem_size pop_bottom_pad">
                             <label for="size">DIN A page sizes</label>
                             <select class="btn btn-success" name="size" id="dinasize">
-                                    <option id="a1" class="dinaSel">DIN A1</option>
-                                    <option id="a2" class="dinaSel">DIN A2</option>
-                                    <option id="a3" class="dinaSel">DIN A3</option>
-                                    <option id="a4" selected="selected" class="dinaSel">DIN A4</option>
-                                    <option id="a5" class="dinaSel">DIN A5</option>
-                                    <option id="a6" class="dinaSel">DIN A6</option>
-                                    <option id="a7" class="dinaSel">DIN A7</option>
-                                </select>
+                                <option id="a1" class="dinaSel">DIN A1</option>
+                                <option id="a2" class="dinaSel">DIN A2</option>
+                                <option id="a3" class="dinaSel">DIN A3</option>
+                                <option id="a4" selected="selected" class="dinaSel">DIN A4</option>
+                                <option id="a5" class="dinaSel">DIN A5</option>
+                                <option id="a6" class="dinaSel">DIN A6</option>
+                                <option id="a7" class="dinaSel">DIN A7</option>
+                            </select>
                         </div>
                         <div class="pop_elem_size pop_bottom_pad">
                             <legend>Orientation</legend>
@@ -81,7 +82,7 @@
                             <input id="blank_height" type="number" value="210" />
                         </div>
                         <div class="pop_elem_size">
-                        <button @click="savePDF" class="btn btn-success">Save</button>
+                            <button @click="savePDF" class="btn btn-success space_btw_radio">Save</button>
                             <button @click="toggleCancle" class="btn btn-success">Cancel</button>
                         </div>
                     </fieldset> 
