@@ -42,13 +42,15 @@ const splitter = Vue.createApp({
                     break;
                 case 1:
                     document.getElementById('save_split').disabled = false;
-                    applySplitEveryPage();
+                    applySplitAfterEveryPage();
                     break;
                 case 2:
                     document.getElementById('save_split').disabled = false;
+                    applySplitAfterEvenOddPage(2, 1);
                     break;
                 case 3:
                     document.getElementById('save_split').disabled = false;
+                    applySplitAfterEvenOddPage(2, 0);
                     break;
             }
         },
@@ -68,8 +70,7 @@ const splitter = Vue.createApp({
 
 splitter.mount('#split_app');
 
-
-async function applySplitEveryPage() {
+async function applySplitAfterEveryPage() {
     let srcPDFDoc = await PDFDocument.load(selectedPDFBytes);
     for(let i = 0; i < srcPDFDoc.getPages().length; i++) {
         let newPDFDoc = await PDFDocument.create();
@@ -77,5 +78,31 @@ async function applySplitEveryPage() {
         const [currentPage] = newPage;
         newPDFDoc.addPage(currentPage);
         splittedPDFs.push(newPDFDoc);
+    }
+}
+
+async function applySplitAfterEvenOddPage(n, nRest) {
+    let firstPage = true;
+    let srcPDFDoc = await PDFDocument.load(selectedPDFBytes);
+    for(let i = 0; i < srcPDFDoc.getPages().length; i++) {
+        if (i % n == nRest) {
+            if (firstPage) {
+                firstPage = false;
+                if (nRest == 1) {
+                    let newPDFDoc = await PDFDocument.create();
+                    let newPage = await newPDFDoc.copyPages(srcPDFDoc, [0]);
+                    const [currentPage] = newPage;
+                    newPDFDoc.addPage(currentPage);
+                    splittedPDFs.push(newPDFDoc);
+                }
+            }
+            let newPDFDoc = await PDFDocument.create();
+            for (let j = i; j < i + n; j++) {
+                let newPage = await newPDFDoc.copyPages(srcPDFDoc, [j]);
+                const [currentPage] = newPage;
+                newPDFDoc.addPage(currentPage);
+            }
+            splittedPDFs.push(newPDFDoc);
+        }
     }
 }
