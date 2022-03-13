@@ -47,7 +47,7 @@
                         <input @input="selectFile" type="file" id="inputsplitfile" class="filestyle" data-btnClass="btn-success" data-input="false" accept=".pdf">
                         <div><p> {{ pdfToSplit }} </p></div>
                         <label for="after" class="space_btw_radio">Split frequently after</label>
-                        <select class="btn btn-success" name="after" id="split_after">
+                        <select id="split_after" class="btn btn-success" name="after" disabled>
                             <option @click="selectRegularSplit(0)" id="none_sel" selected="true">none</option>
                             <option @click="selectRegularSplit(1)" id="every_p">every page</option>
                             <option @click="selectRegularSplit(2)" id="odd_p">odd pages</option>
@@ -55,7 +55,7 @@
                         </select>
                     </div>
                     <div class="pop_elem_size">
-                        <button @click="saveSplittedPDFs" class="btn btn-success space_btw_radio">Save</button>
+                        <button @click="saveSplittedPDFs" id="save_split" class="btn btn-success space_btw_radio" disabled>Save</button>
                         <button @click="toggleCancle" class="btn btn-success">Cancel</button>
                     </div>
                 </fieldset>

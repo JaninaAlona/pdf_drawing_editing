@@ -32,26 +32,32 @@ const splitter = Vue.createApp({
             }
             fileReader.readAsArrayBuffer(file);
             this.pdfToSplit = file.name;
+            document.getElementById('split_after').disabled = false;
         },
 
         selectRegularSplit(regularSplitOpt) {
             switch(regularSplitOpt) {
                 case 0:
-                    splittedPDFs.push(selectedPDF);
+                    document.getElementById('save_split').disabled = true;
                     break;
                 case 1:
+                    document.getElementById('save_split').disabled = false;
                     applySplitEveryPage();
                     break;
                 case 2:
+                    document.getElementById('save_split').disabled = false;
                     break;
                 case 3:
+                    document.getElementById('save_split').disabled = false;
                     break;
             }
         },
         async saveSplittedPDFs() {
+            let outputName = this.pdfToSplit;
+            outputName = outputName.substring(0, outputName.length - 4);
             for(let i = 0; i < splittedPDFs.length; i++) {
                 const pdfBytes = await splittedPDFs[i].save();
-                download(pdfBytes, "split_pdf_" + i + ".pdf", "application/pdf");
+                download(pdfBytes, outputName + "_" + i + ".pdf", "application/pdf");
             } 
             splittedPDFs = [];
             cleanUp();
